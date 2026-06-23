@@ -20,6 +20,6 @@ jobs:
         uses: bcomnes/deploy-to-neocities@v3
         with:
           api_token: ${{ secrets.NEOCITIES_API_TOKEN }}
-          cleanup: true # Set to true if you want to delete remote files not in git
+          cleanup: false # Set to true if you want to delete remote files not in git
           dist_dir: . # Change to 'public' or 'dist' if you use a build framework
 
