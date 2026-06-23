@@ -1,20 +1,29 @@
-name: Deploy to Neocities
+name: Deploy to neocities
 
+# only run on changes to main.
 on:
   push:
     branches:
-      - main # or master, depending on your default branch
+      - main
+
+concurrency: # prevent concurrent deploys doing strange things
+  group: deploy-to-neocities
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
 
-    - name: Deploy to Neocities
+    steps:
+    # Copies your repo into the action runner.
+    - uses: actions/checkout@v4
+
+    # Deploys the folder named `public` directly to Neocities
+    - name: Deploy to neocities
       uses: bcomnes/deploy-to-neocities@v3
       with:
-        api_key: ${{ secrets.NEOCITIES_API_TOKEN }} # 1. Changed api_token to api_key
-        cleanup: true
+        api_key: ${{ secrets.NEOCITIES_API_TOKEN }}
+        cleanup: true                # Changed to true so old broken files get wiped out
+        neocities_supporter: false 
+        preview_before_deploy: true 
         dist_dir: public
