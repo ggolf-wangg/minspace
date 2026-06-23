@@ -1,1 +1,24 @@
+name: Deploy to Neocities
 
+on:
+  push:
+    branches:
+      - main # Change to 'master' if your default branch is named master
+
+concurrency:
+  group: deploy-to-neocities
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Neocities
+        uses: bcomnes/deploy-to-neocities@v3
+        with:
+          api_token: ${{ secrets.NEOCITIES_API_TOKEN }}
+          cleanup: true # Set to true if you want to delete remote files not in git
+          dist_dir: . # Change to 'public' or 'dist' if you use a build framework
