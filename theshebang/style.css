@@ -6,4 +6,9 @@ body {
   background-color: beige;
   color: black;
   font-family: Verdana;
+
+  cursor: none !important;
+  a, button, [role="button"], input[type="submit"] {
+    cursor: none !important;
+  }
 }
