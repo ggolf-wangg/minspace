@@ -12,34 +12,36 @@ const hoverFrames = [
     'url("Cursor/Link/venuscursor-link4.png"), pointer'
 ];
 
-let currentDefaultFrame = 0;
-let currentHoverFrame = 0;
-let hoverinterval = null;
+let currentFrameIndex = 0;
+let isHovering = false;
+let hoveredElement = null;
 
-function animateDefaultCursor() {
-    document.body.style.cursor = defaultFrames[currentDefaultFrame];
-    currentDefaultFrame = (currentDefaultFrame + 1) % defaultFrames.length;
-}
-
-let defaultinterval = setInterval(animateDefaultCursor, 150);
+setInterval(() => {
+    if (isHovering) {
+        currentFrameIndex = (currentFrameIndex + 1) % defaultFrames.length;
+        document.body.style.cursor = defaultFrames[currentFrameIndex];
+    } else if (hoveredElement) {
+        currentFrameIndex = (currentFrameIndex + 1) % hoverFrames.length;
+        hoveredElement.style.cursor = hoverFrames[currentFrameIndex];
+    }
+}, 200);
 
 const clickableElements = document.querySelectorAll('a, button, [role="button"], input[type="submit"]');
 
 clickableElements.forEach(element => {
     element.addEventListener('mouseenter', () => {
-        clearInterval(defaultinterval);
-
-
-        hoverinterval = setInterval(() => {
-            element.style.cursor = hoverFrames[currentHoverFrame];
-            currentHoverFrame = (currentHoverFrame + 1) % hoverFrames.length;
-        }, 150);
+        isHovering = true;
+        hoveredElement = element;
+        currentFrameIndex = 0;
+        element.style.cursor = hoverFrames[0];
     });
 
     element.addEventListener('mouseleave', () => {
-        clearInterval(hoverinterval);
+        isHovering = false;
         element.style.cursor = '';
-        currentHoverFrame = 0;
-        defaultinterval = setInterval(animateDefaultCursor, 150);
+        hoveredElement = null;
+        currentFrameIndex = 0;
+
+        document.body.style.cursor = defaultFrames[0];
     });
 });
