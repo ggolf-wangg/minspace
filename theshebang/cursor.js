@@ -1,18 +1,20 @@
 const defaultFrames = [
-    'url("minspace\theshebang\Cursor\Regular\venuscursor-reg1.png"), default',
-    'url("minspace\theshebang\Cursor\Regular\venuscursor-reg2.png"), default',
-    'url("minspace\theshebang\Cursor\Regular\venuscursor-reg1.png"), default',
-    'url("minspace\theshebang\Cursor\Regular\venuscursor-reg3.png"), default'
+    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg1.png"), default',
+    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg2.png"), default',
+    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg1.png"), default',
+    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg3.png"), default'
 ];
 
 const hoverFrames = [
-    'url("minspace\theshebang\Cursor\Link\venuscursor-link1.png"), pointer',
-    'url("minspace\theshebang\Cursor\Link\venuscursor-link2.png"), pointer',
-    'url("minspace\theshebang\Cursor\Link\venuscursor-link3.png"), pointer',
-    'url("minspace\theshebang\Cursor\Link\venuscursor-link4.png"), pointer'
+    'url("minspace/theshebang/Cursor/Link/venuscursor-link1.png"), pointer',
+    'url("minspace/theshebang/Cursor/Link/venuscursor-link2.png"), pointer',
+    'url("minspace/theshebang/Cursor/Link/venuscursor-link3.png"), pointer',
+    'url("minspace/theshebang/Cursor/Link/venuscursor-link4.png"), pointer'
 ];
 
-let currentFrame = 0;
+let currentDefaultFrame = 0;
+let currentHoverFrame = 0;
+let hoverinterval = null;
 
 function animateDefaultCursor() {
     document.body.style.cursor = defaultFrames[currentDefaultFrame];
@@ -21,10 +23,7 @@ function animateDefaultCursor() {
 
 let defaultinterval = setInterval(animateDefaultCursor, 150);
 
-let hoverinterval = null;
-let currentHoverFrame = 0;
-
-const clickableElements = document.querySelectorAll('a, button, input[role="button"], input[type="submit"]');
+const clickableElements = document.querySelectorAll('a, button, [role="button"], input[type="submit"]');
 
 clickableElements.forEach(element => {
     element.addEventListener('mouseenter', () => {
@@ -39,7 +38,7 @@ clickableElements.forEach(element => {
 
     element.addEventListener('mouseleave', () => {
         clearInterval(hoverinterval);
-        element.style.cursor = 'default';
+        element.style.cursor = '';
         currentHoverFrame = 0;
         defaultinterval = setInterval(animateDefaultCursor, 150);
     });
