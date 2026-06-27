@@ -1,15 +1,15 @@
 const defaultFrames = [
-    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg1.png"), default',
-    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg2.png"), default',
-    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg1.png"), default',
-    'url("minspace/theshebang/Cursor/Regular/venuscursor-reg3.png"), default'
+    'url("theshebang/Cursor/Regular/venuscursor-reg1.png"), default',
+    'url("theshebang/Cursor/Regular/venuscursor-reg2.png"), default',
+    'url("theshebang/Cursor/Regular/venuscursor-reg1.png"), default',
+    'url("theshebang/Cursor/Regular/venuscursor-reg3.png"), default'
 ];
 
 const hoverFrames = [
-    'url("minspace/theshebang/Cursor/Link/venuscursor-link1.png"), pointer',
-    'url("minspace/theshebang/Cursor/Link/venuscursor-link2.png"), pointer',
-    'url("minspace/theshebang/Cursor/Link/venuscursor-link3.png"), pointer',
-    'url("minspace/theshebang/Cursor/Link/venuscursor-link4.png"), pointer'
+    'url("theshebang/Cursor/Link/venuscursor-link1.png"), pointer',
+    'url("theshebang/Cursor/Link/venuscursor-link2.png"), pointer',
+    'url("theshebang/Cursor/Link/venuscursor-link3.png"), pointer',
+    'url("theshebang/Cursor/Link/venuscursor-link4.png"), pointer'
 ];
 
 let currentDefaultFrame = 0;
