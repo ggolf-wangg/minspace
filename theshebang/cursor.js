@@ -19,14 +19,20 @@ let currentHoverElement = null;
 let isDragging = false;
 let isHoveringDraggable = false;
 
+const forceCursorStyle = document.createElement('style');
+document.head.appendChild(forceCursorStyle);
+
 
 setInterval(() => {
     if (isDragging || isHoveringDraggable) { return; }
+
     if (isHovering && currentHoverElement) {
-        currentHoverElement.style.cursor = hoverFrames[hoverIndex];
+        document.documentElement.style.cursor = hoverFrames[hoverIndex];
+        forceCursorStyle.innerHTML = `* { cursor: ${hoverFrames[hoverIndex]} !important; }`;
         hoverIndex = (hoverIndex + 1) % hoverFrames.length;
     } else {
-        document.body.style.cursor = defaultFrames[defaultIndex];
+        document.documentElement.style.cursor = defaultFrames[defaultIndex];
+        forceCursorStyle.innerHTML = `* { cursor: ${defaultFrames[defaultIndex]} !important; }`;
         defaultIndex = (defaultIndex + 1) % defaultFrames.length;
     }
 }, 200);
@@ -38,14 +44,11 @@ clickableElements.forEach(element => {
         isHovering = true;
         currentHoverElement = element;
         hoverIndex = 0;
-        element.style.cursor = hoverFrames[0];
     });
 
     element.addEventListener('mouseleave', () => {
         isHovering = false;
         currentHoverElement = null;
-        element.style.cursor = '';
-        document.documentElement.style.cursor = defaultFrames[defaultIndex];
     });
 });
 
