@@ -53,15 +53,25 @@ clickableElements.forEach(element => {
 const draggables = document.querySelectorAll('[draggable="true"]');
 
 draggables.forEach(item => {
-    item.style.position = 'relative';
+
+    const placeholder = document.createElement('div');
     let offsetX = 0;
     let offsetY = 0;
+
+    
 item.addEventListener('dragstart', (e) => {
     isDragging = true;
 
     const rect = item.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
+    placeholder.style.width = `${rect.width}px`;
+    placeholder.style.height = `${rect.height}px`;
+    placeholder.style.display = item.style.display || 'inline-block';
+
+    item.parentNode.insertBefore(placeholder, item);
+
+    item.style.position = 'absolute';
 
     e.dataTransfer.setData('text/plain', '');
 });
