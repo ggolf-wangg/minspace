@@ -17,12 +17,11 @@ let isHovering = false;
 let hoverIndex = 0;
 let currentHoverElement = null;
 let isDragging = false;
+let isHoveringDraggable = false;
 
 
 setInterval(() => {
-    if (isDragging) {
-        return;
-    }
+    if (isDragging || isHoveringDraggable) { return; }
     if (isHovering && currentHoverElement) {
         currentHoverElement.style.cursor = hoverFrames[hoverIndex];
         hoverIndex = (hoverIndex + 1) % hoverFrames.length;
@@ -76,6 +75,13 @@ item.addEventListener('dragstart', (e) => {
     e.dataTransfer.setData('text/plain', '');
 });
 
+item.addEventListener('mouseenter', (e) => {
+    isHoveringDraggable = true;
+});
+
+item.addEventListener('mouseleave', (e) => {
+    isHoveringDraggable = false;
+});
 
 item.addEventListener('dragend', (e) => {
     isDragging = false;
