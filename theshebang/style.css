@@ -6,8 +6,10 @@ body {
   }
 
 html, body {
-  cursor: none !important;
+  cursor: none;
+
   a, button, [role="button"], input[type="submit"] {
     cursor: none !important;
   }
-  }
+ 
+}

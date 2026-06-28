@@ -12,17 +12,23 @@ const hoverFrames = [
     'url("Cursor/Link/venuscursor-link4.png"), pointer'
 ];
 
-let currentFrameIndex = 0;
+let defaultIndex = 0;
 let isHovering = false;
-let hoveredElement = null;
+let hoverIndex = 0;
+let currentHoverElement = null;
+let isDragging = false;
+
 
 setInterval(() => {
-    if (isHovering) {
-        currentFrameIndex = (currentFrameIndex + 1) % defaultFrames.length;
-        document.body.style.cursor = defaultFrames[currentFrameIndex];
-    } else if (hoveredElement) {
-        currentFrameIndex = (currentFrameIndex + 1) % hoverFrames.length;
-        hoveredElement.style.cursor = hoverFrames[currentFrameIndex];
+    if (isDragging) {
+        return;
+    }
+    if (isHovering && currentHoverElement) {
+        currentHoverElement.style.cursor = hoverFrames[hoverIndex];
+        hoverIndex = (hoverIndex + 1) % hoverFrames.length;
+    } else {
+        document.body.style.cursor = defaultFrames[defaultIndex];
+        defaultIndex = (defaultIndex + 1) % defaultFrames.length;
     }
 }, 200);
 
@@ -31,17 +37,43 @@ const clickableElements = document.querySelectorAll('a, button, [role="button"],
 clickableElements.forEach(element => {
     element.addEventListener('mouseenter', () => {
         isHovering = true;
-        hoveredElement = element;
-        currentFrameIndex = 0;
+        currentHoverElement = element;
+        hoverIndex = 0;
         element.style.cursor = hoverFrames[0];
     });
 
     element.addEventListener('mouseleave', () => {
         isHovering = false;
+        currentHoverElement = null;
         element.style.cursor = '';
-        hoveredElement = null;
-        currentFrameIndex = 0;
+        document.documentElement.style.cursor = defaultFrames[defaultIndex];
+    });
+});
 
-        document.body.style.cursor = defaultFrames[0];
+const draggables = document.querySelectorAll('[draggable="true"]');
+
+draggables.forEach(item => {
+    item.style.position = 'relative';
+    let offsetX = 0;
+    let offsetY = 0;
+item.addEventListener('dragstart', (e) => {
+    isDragging = true;
+
+    const rect = item.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    e.dataTransfer.setData('text/plain', '');
+});
+
+
+item.addEventListener('dragend', (e) => {
+    isDragging = false;
+
+    const newX = e.clientX - offsetX;
+    const newY = e.clientY - offsetY;
+
+    item.style.left = `${newX}px`;
+    item.style.top = `${newY}px`;
     });
 });
