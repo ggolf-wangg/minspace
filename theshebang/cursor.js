@@ -55,13 +55,15 @@ clickableElements.forEach(element => {
 const draggables = document.querySelectorAll('.draggable-item');
 
 draggables.forEach(item => {
-
     const placeholder = document.createElement('div');
     let offsetX = 0;
     let offsetY = 0;
 
     
-item.addEventListener('dragstart', (e) => e.preventDefault());  
+item.addEventListener('dragstart', (e) => { 
+    e.preventDefault();
+    return false;
+});  
 
 item.addEventListener('mouseenter', () => {
         isHoveringDraggable = true;
@@ -80,6 +82,7 @@ item.addEventListener('mouseenter', () => {
         isHoveringDraggable = true;
 
         const rect = item.getBoundingClientRect();
+        
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
 
