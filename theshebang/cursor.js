@@ -52,7 +52,7 @@ clickableElements.forEach(element => {
     });
 });
 
-const draggables = document.querySelectorAll('[draggable="true"]');
+const draggables = document.querySelectorAll('.draggable-item');
 
 draggables.forEach(item => {
 
@@ -61,38 +61,55 @@ draggables.forEach(item => {
     let offsetY = 0;
 
     
-item.addEventListener('dragstart', (e) => {
-    isDragging = true;
+item.addEventListener('dragstart', (e) => e.preventDefault());  
 
-    const rect = item.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    placeholder.style.width = `${rect.width}px`;
-    placeholder.style.height = `${rect.height}px`;
-    placeholder.style.display = item.style.display || 'inline-block';
-
-    item.parentNode.insertBefore(placeholder, item);
-
-    item.style.position = 'absolute';
-
-    e.dataTransfer.setData('text/plain', '');
-});
-
-item.addEventListener('mouseenter', (e) => {
-    isHoveringDraggable = true;
-});
-
-item.addEventListener('mouseleave', (e) => {
-    isHoveringDraggable = false;
-});
-
-item.addEventListener('dragend', (e) => {
-    isDragging = false;
-
-    const newX = e.clientX - offsetX;
-    const newY = e.clientY - offsetY;
-
-    item.style.left = `${newX}px`;
-    item.style.top = `${newY}px`;
+item.addEventListener('mouseenter', () => {
+        isHoveringDraggable = true;
     });
-});
+
+    item.addEventListener('mouseleave', () => {
+        if (!isDragging) {
+            isHoveringDraggable = false;
+        }
+    });
+
+    item.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return; 
+
+        isDragging = true;
+        isHoveringDraggable = true;
+
+        const rect = item.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        placeholder.style.width = `${rect.width}px`;
+        placeholder.style.height = `${rect.height}px`;
+        placeholder.style.display = window.getComputedStyle(item).display || 'inline-block';
+        placeholder.style.margin = window.getComputedStyle(item).margin;
+
+        if (!placeholder.parentNode) {
+            item.parentNode.insertBefore(placeholder, item);
+        }
+
+        item.style.position = 'absolute';
+        item.style.zIndex = 1000;
+        item.style.left = `${e.clientX - offsetX}px`;
+        item.style.top = `${e.clientY - offsetY}px`;
+
+        window.addEventListener('mousemove', mouseMoveHandler);
+        window.addEventListener('mouseup', mouseUpHandler);
+    });
+
+    function mouseMoveHandler(e) {
+        if (!isDragging) return;
+        item.style.left = `${e.clientX - offsetX}px`;
+        item.style.top = `${e.clientY - offsetY}px`;
+    }
+
+    function mouseUpHandler() {
+        isDragging = false;
+        isHoveringDraggable = false;
+        window.removeEventListener('mousemove', mouseMoveHandler);
+        window.removeEventListener('mouseup', mouseUpHandler);
+    }});
