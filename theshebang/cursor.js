@@ -1,8 +1,8 @@
 const defaultFrames = [
     'url("Cursor/Regular/venuscursor-reg1.png"), default',
     'url("Cursor/Regular/venuscursor-reg2.png"), default',
-    'url("Cursor/Regular/venuscursor-reg1.png"), default',
-    'url("Cursor/Regular/venuscursor-reg3.png"), default'
+    'url("Cursor/Regular/venuscursor-reg3.png"), default',
+    'url("Cursor/Regular/venuscursor-reg4.png"), default'
 ];
 
 const hoverFrames = [
@@ -76,7 +76,7 @@ item.addEventListener('mouseenter', () => {
     });
 
     item.addEventListener('mousedown', (e) => {
-        if (e.button !== 0) return; 
+       if (e.button !== 0) return;
 
         isDragging = true;
         isHoveringDraggable = true;
